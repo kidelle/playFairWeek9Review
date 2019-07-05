@@ -11,6 +11,7 @@ let config = {};
 
 if ( process.env.DATABASE_URL ) {
     // Heroku config
+    const url = require('url');
     const params = url.parse (process.env.DATABASE_URL);
     const auth = params.auth.split(':');
      // Heroku puts security on our database!
