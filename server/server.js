@@ -6,6 +6,7 @@ const pool = require( './modules/pool' );
 
 // uses
 app.use( express.static( 'server/public' ) );
+app.use( bodyParser.urlencoded( { extended: true } ) );
 
 // globals
 const port = 5000;
@@ -26,3 +27,15 @@ app.get( '/items', ( req, res )=>{
         res.sendStatus( 500 );
     })
 }) // end /items GET
+
+app.post( '/items', ( req, res )=>{
+    console.log( 'in /items POST:', req.body );
+    const query = `INSERT INTO "items" ( "size", "color", "name" ) VALUES ( $1, $2, $3 );`;
+    const values = [ req.body.size, req.body.color, req.body.name ];
+    pool.query( query, values ).then( ( results )=>{
+        res.sendStatus( 201 );
+    }).catch( ( err )=>{
+        console.log( 'ERROR with INSERT:', err );
+        res.sendStatus( 500 );
+    })
+}) //end /items POST

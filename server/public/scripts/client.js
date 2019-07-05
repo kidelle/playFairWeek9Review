@@ -2,7 +2,22 @@ $( document ).ready( onReady );
 
 function addItem( e ){
     e.preventDefault();
-    console.log( 'in addItem' );
+    let objectToSend = {
+        size: $('#sizeIn').val(),
+        color: $('#colorIn').val(),
+        name: $('#nameIn').val()
+    }
+    console.log( 'in addItem:', objectToSend );
+    $.ajax({
+        type: 'POST',
+        url: '/items',
+        data: objectToSend
+    }).then( function( response ){
+        console.log( 'back from POST:', response );
+        getItems();
+    }).catch( function( err ){
+        alert( 'error adding item:', err );
+    })
 }
 
 function getItems(){
