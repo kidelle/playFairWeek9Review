@@ -17,6 +17,18 @@ app.listen( port, ()=>{
 })
 
 // routes
+app.delete( '/items/:id', ( req, res )=>{
+    console.log( '/items DELETE hit:', req.params.id );
+    const query = `DELETE FROM "items" WHERE id=$1;`;
+    const values = [ req.params.id ];
+    pool.query( query, values ).then( ( response )=>{
+        res.sendStatus( 200 );
+    }).catch( ( err )=>{
+        console.log( 'error with DELETE:', err );
+        res.sendStatus( 500 );
+    })
+}) // end /items delete
+
 app.get( '/items', ( req, res )=>{
     console.log( 'in /items GET' );
     const query = `SELECT * from "items";`;
@@ -39,3 +51,15 @@ app.post( '/items', ( req, res )=>{
         res.sendStatus( 500 );
     })
 }) //end /items POST
+
+app.put( '/items/:id', ( req, res )=>{
+    console.log( '/items PUT:', req.params.id, req.body );
+    const query = `UPDATE "items" SET pending=$1 WHERE id=$2;`;
+    const values =[ req.body.newPending, req.params.id ];
+    pool.query( query, values ).then( (results)=>{
+        res.sendStatus( 200 );
+    }).catch( ( err )=>{
+        console.log( 'error with update:', err );
+        res.sendStatus( 500 );
+    })
+}) // end /items put
