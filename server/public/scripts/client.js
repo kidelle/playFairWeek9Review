@@ -1,5 +1,10 @@
 $( document ).ready( onReady );
 
+function addItem( e ){
+    e.preventDefault();
+    console.log( 'in addItem' );
+}
+
 function onReady(){
-    console.log( 'JQ' );
+    $( '#addItemButton' ).on( 'click', addItem );
 }
